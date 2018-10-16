@@ -7,6 +7,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -22,8 +25,9 @@ public class CatalogController {
 
     @GetMapping(path = "/hello", produces = APPLICATION_JSON_VALUE)
     public String hello() {
-        String name = jdbcTemplate.queryForObject("select name from catalog", String.class);
+        List<String> name = jdbcTemplate.queryForList("select name from catalog", String.class);
         log.info("returned from db: {}", name);
-        return name;
+        return name.stream()
+            .collect(Collectors.joining(","));
     }
 }
