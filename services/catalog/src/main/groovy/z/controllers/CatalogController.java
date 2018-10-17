@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -16,18 +19,25 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CatalogController {
     private final static Logger log = LoggerFactory.getLogger(CatalogController.class);
 
+    private final Scheduler scheduler;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public CatalogController(JdbcTemplate jdbcTemplate) {
+    public CatalogController(Scheduler scheduler, JdbcTemplate jdbcTemplate) {
+        this.scheduler = scheduler;
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @GetMapping(path = "/hello", produces = APPLICATION_JSON_VALUE)
-    public String hello() {
-        List<String> name = jdbcTemplate.queryForList("select name from catalog", String.class);
-        log.info("returned from db: {}", name);
-        return name.stream()
-            .collect(Collectors.joining(","));
+    public Mono<String> hello() {
+        Callable<List<String>> callable = () -> jdbcTemplate.queryForList("select name from catalog", String.class);
+        Mono<List<String>> mono = Mono.fromCallable(callable)
+            .publishOn(scheduler);
+
+        return mono.map(s -> asString(s));
+    }
+
+    private String asString(List<String> s) {
+        return s.stream().collect(Collectors.joining(","));
     }
 }
