@@ -12,7 +12,6 @@ services:
       - ./data:/var/lib/postgresql/data
 
   catalog.api:
-#   image: eshop/catalog.api:${TAG:-latest}
     image: catalog
     environment: 
       - DB_URL=jdbc:postgresql://sql.data:5432/postgres
@@ -20,3 +19,8 @@ services:
     depends_on:
       - sql.data
 
+  api.gateway:
+    image: web.bff.shopping
+    ports: ["8081:8081"]
+    depends_on:
+    - catalog.api
