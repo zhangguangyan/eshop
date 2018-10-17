@@ -28,7 +28,7 @@ public class CatalogController {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @GetMapping(path = "/hello", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/catalog/items", produces = APPLICATION_JSON_VALUE)
     public Mono<String> hello() {
         Callable<List<String>> callable = () -> jdbcTemplate.queryForList("select name from catalog", String.class);
         Mono<List<String>> mono = Mono.fromCallable(callable)
