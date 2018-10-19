@@ -11,6 +11,12 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
   catalog.api:
     image: catalog
     environment: 
@@ -18,6 +24,11 @@ services:
     ports: ["8080:8080"]
     depends_on:
       - sql.data
+
+  ordering.api:
+    image: ordering
+    depends_on:
+      - rabbitmq
 
   api.gateway:
     image: web.bff.shopping
