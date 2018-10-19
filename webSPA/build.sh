@@ -1,2 +1,2 @@
 #!/bin/bash
-rm -fr dist && npm run build && docker build -t webspa .
+rm -fr dist && npm i && npm run build && docker build -t webspa .
