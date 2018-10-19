@@ -20,7 +20,7 @@ public class App {
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-            .route("r1", r -> r.path("/catalog/**")
+            .route("r1", r -> r.path("/api/v1/catalog/**")
                 .uri(catalogApiUrl))
             .build();
     }
