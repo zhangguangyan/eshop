@@ -1,4 +1,8 @@
 #!/bin/bash
-./gradlew clean :api.gateway:web.bff.shopping:docker :services:catalog:docker :services:ordering:docker
+set -e
+#build jars and minify js
+./gradlew clean build
 cd webSPA && ./build.sh
-cd .. && docker-compose -f docker-compose.yml up
+cd ..
+#run the applications
+docker-compose -f docker-compose.yml build && docker-compose -f docker-compose.yml up

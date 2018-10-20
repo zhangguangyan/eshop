@@ -19,30 +19,41 @@ services:
 
   catalog.api:
     image: catalog
-    environment: 
-      - DB_URL=jdbc:postgresql://sql.data:5432/postgres
-    ports: ["8080:8080"]
+    build:
+      context: ./services/catalog
     depends_on:
       - sql.data
       - rabbitmq
+    environment:
+      - DB_URL=jdbc:postgresql://sql.data:5432/postgres
+    ports:
+      - "8080:8080"
 
   ordering.api:
     image: ordering
+    build:
+      context: ./services/ordering
     depends_on:
       - rabbitmq
 
   api.gateway:
     image: web.bff.shopping
-    environment:
-      - CATALOG_API_URL=http://catalog.api:8080
-    ports: ["8081:8080"]
+    build:
+      context: ./api.gateway/web.bff.shopping
     depends_on:
       - catalog.api
+    environment:
+      - CATALOG_API_URL=http://catalog.api:8080
+    ports:
+      - "8081:8080"
 
   web.spa:
     image: webspa
-    environment:
-      - API_GATEWAY=http://api.gateway:8080
-    ports: ["8085:80"]
+    build:
+      context: ./webSPA
     depends_on:
       - api.gateway
+    environment:
+      - API_GATEWAY=http://api.gateway:8080
+    ports:
+      - "8085:80"
