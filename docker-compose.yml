@@ -26,6 +26,7 @@ services:
       - rabbitmq
     environment:
       - DB_URL=jdbc:postgresql://sql.data:5432/postgres
+      - RABBITMQ_HOST=rabbitmq
     ports:
       - "8080:8080"
 
