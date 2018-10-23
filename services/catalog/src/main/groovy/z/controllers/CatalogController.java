@@ -39,14 +39,17 @@ public class CatalogController {
         Mono<List<String>> mono = Mono.fromCallable(callable)
             .publishOn(scheduler);
 
-        rabbitTemplate.convertAndSend("spring-boot-exchange", "foo.bar.baz", "Hello from RabbitMQ!");
         return mono.map(s -> asString(s));
     }
 
     @PostMapping(path = "/items", produces = APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<String>> createItem(@RequestBody CatalogItem catalogItem) {
         log.debug("create catalog item: {}", catalogItem);
-        Callable<Integer> callable = () -> jdbcTemplate.update("insert  into catalog(name) values(?)", catalogItem.getName());
+        Callable<Integer> callable = () -> {
+            int rows = jdbcTemplate.update("insert  into catalog(name) values(?)", catalogItem.getName());
+            rabbitTemplate.convertAndSend("eshop-exchange", "eshop.catalog", EventBuilder.productAdded(catalogItem));
+            return rows;
+        };
         Mono<Integer> mono = Mono.fromCallable(callable)
             .publishOn(scheduler);
         return mono.map(s -> s > 0 ? new ResponseEntity<>(HttpStatus.CREATED): new ResponseEntity<>(HttpStatus.BAD_REQUEST));

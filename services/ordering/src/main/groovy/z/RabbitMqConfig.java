@@ -13,32 +13,32 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Configuration
 public class RabbitMqConfig {
-    public static final String topicExchangeName = "spring-boot-exchange";
+    public static final String topicExchangeName = "eshop-exchange";
 
-    static final String queueName = "spring-boot";
+    static final String queueName = "eshop.catalog.ordering";
 
     @Bean
     public Queue queue() {
-        return new Queue(queueName, false);
+        return new Queue(queueName, true);
     }
 
     @Bean
     TopicExchange exchange() {
-        return new TopicExchange(topicExchangeName);
+        return new TopicExchange(topicExchangeName, true, false);
     }
 
     @Bean
     Binding binding(Queue queue, TopicExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("foo.bar.#");
+        return BindingBuilder.bind(queue).to(exchange).with("eshop.catalog");
     }
 
     @Bean
-    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, HelloRabbit what) {
+    SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, HelloRabbit helloRabbit) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.setQueueNames(queueName);
         container.setMessageListener(message -> {
-            what.receiveMessage(new String(message.getBody(), UTF_8));
+            helloRabbit.receiveMessage(new String(message.getBody(), UTF_8));
         });
         return container;
     }
