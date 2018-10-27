@@ -29,6 +29,7 @@ services:
       - RABBITMQ_HOST=rabbitmq
     ports:
       - "8080:8080"
+    entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--", "java", "-jar", "/app.jar"]
 
   ordering.api:
     image: ordering
@@ -36,6 +37,7 @@ services:
       context: ./services/ordering
     depends_on:
       - rabbitmq
+    entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--", "java", "-jar", "/app.jar"]
 
   api.gateway:
     image: web.bff.shopping
