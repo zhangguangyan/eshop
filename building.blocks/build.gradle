@@ -1,0 +1,30 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
+    dependencies {
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:2.0.6.RELEASE')
+    }
+}
+
+apply plugin: 'groovy'
+
+repositories {
+    jcenter()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy-all:2.5.3'
+    compile('org.springframework.amqp:spring-amqp:2.0.8.RELEASE')
+    compile('org.springframework.amqp:spring-rabbit:2.0.8.RELEASE')
+
+    testCompile('junit:junit:4.12')
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.23.0'
+    testCompile group: 'org.springframework', name: 'spring-test', version: '5.0.8.RELEASE'
+}
