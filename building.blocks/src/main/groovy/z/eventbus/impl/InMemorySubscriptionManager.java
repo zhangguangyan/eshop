@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class InMemoerySubscriptionManager implements SubscriberManager {
+public class InMemorySubscriptionManager implements SubscriberManager {
     private final Map<String, List<IntegrationEventHandler>> subscriptions = new HashMap<>();
 
     @Override

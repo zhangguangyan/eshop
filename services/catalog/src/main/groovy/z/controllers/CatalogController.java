@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
+import z.eventbus.EventBus;
+import z.eventbus.IntegrationEvent;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -24,13 +26,13 @@ public class CatalogController {
 
     private final Scheduler scheduler;
     private final JdbcTemplate jdbcTemplate;
-    private final RabbitTemplate rabbitTemplate;
+    private final EventBus eventBus;
 
     @Autowired
-    public CatalogController(Scheduler scheduler, JdbcTemplate jdbcTemplate, RabbitTemplate rabbitTemplate) {
+    public CatalogController(Scheduler scheduler, JdbcTemplate jdbcTemplate, EventBus eventBus) {
         this.scheduler = scheduler;
         this.jdbcTemplate = jdbcTemplate;
-        this.rabbitTemplate = rabbitTemplate;
+        this.eventBus = eventBus;
     }
 
     @GetMapping(path = "/items", produces = APPLICATION_JSON_VALUE)
@@ -46,13 +48,20 @@ public class CatalogController {
     public Mono<ResponseEntity<String>> createItem(@RequestBody CatalogItem catalogItem) {
         log.debug("create catalog item: {}", catalogItem);
         Callable<Integer> callable = () -> {
-            int rows = jdbcTemplate.update("insert  into catalog(name) values(?)", catalogItem.getName());
-            rabbitTemplate.convertAndSend("eshop-exchange", "eshop.catalog", EventBuilder.productAdded(catalogItem));
+            int rows = jdbcTemplate.update("insert into catalog(name) values(?)", catalogItem.getName());
+            String event = EventBuilder.productAdded(catalogItem);
+            eventBus.publish(new IntegrationEvent(String.format("{\"id\":%s}", event)));
             return rows;
         };
         Mono<Integer> mono = Mono.fromCallable(callable)
             .publishOn(scheduler);
-        return mono.map(s -> s > 0 ? new ResponseEntity<>(HttpStatus.CREATED): new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        return mono.map(s -> s > 0 ? new ResponseEntity<>(HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
+
+    @PutMapping(path = "/items/{id}", produces = APPLICATION_JSON_VALUE)
+    public Mono<ResponseEntity<String>> updateItem(@PathVariable("id") String id) {
+        eventBus.publish(new IntegrationEvent(String.format("{\"id\":%s}", id)));
+        return Mono.just(new ResponseEntity<>(HttpStatus.OK));
     }
 
     private static String asString(List<String> s) {

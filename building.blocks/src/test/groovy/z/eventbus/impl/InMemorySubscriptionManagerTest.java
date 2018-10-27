@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 public class InMemorySubscriptionManagerTest {
     @Test
     public void testGetbackTheSameEventHandlerForDifferentEventsWithSameType() {
-        SubscriberManager manager = new InMemoerySubscriptionManager();
+        SubscriberManager manager = new InMemorySubscriptionManager();
         IntegrationEvent publishedEvent = new IntegrationEvent("{}");
         IntegrationEventHandler handler = event -> {
         };

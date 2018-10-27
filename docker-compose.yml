@@ -37,6 +37,10 @@ services:
       context: ./services/ordering
     depends_on:
       - rabbitmq
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    ports:
+      - "8082:8080"
     entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--", "java", "-jar", "/app.jar"]
 
   api.gateway:
