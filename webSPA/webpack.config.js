@@ -29,7 +29,10 @@ const config = {
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
         port: 9000,
-        overlay: true
+        overlay: true,
+        proxy: {
+            '/api': 'http://localhost:8081'
+          }
     }
 };
 

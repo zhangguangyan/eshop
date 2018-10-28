@@ -17,6 +17,14 @@ curl -v -H'Content-Type:application/json' -d'{"name": "haha"}' http://localhost:
 curl -v http://localhost:8085/api/v1/catalog/items
 ```
 
+## development notes
+
+1. [Spring 5](spring5-notes.md)
+2. javascript work flow
+   1. start application by running ./build.sh
+   2. npm run debug
+   3. vs code debug in chrome
+
 ## Misc
 
 Stop all services and clean up dangling images
