@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const config = {
     entry: {
-        eshop: './src/app.js'
+        eshop: './src/app.ts'
     },
     output: {
         filename: 'js/[name].bundle.[hash].js',
@@ -20,7 +20,7 @@ const config = {
             },
             {
                 test: /\.scss$/,
-                use: ['style-loader','css-loader','sass-loader']
+                use: ['style-loader','css-loader','postcss-loader', 'sass-loader']
             }
         ]
     },
