@@ -7,20 +7,18 @@ import thunk from 'redux-thunk';
 const REQUEST_ALL = 'REQUEST_ALL';
 const RECEIVE_ALL = 'RECEIVE_ALL';
 //async action
-function retrieveAll(url) {
-    return function (dispatch) {
-        dispatch({type:REQUEST_ALL});
-        return fetch(url)
-            .then(res => res.text())
-            .then(response => {
-                dispatch({
-                    type: RECEIVE_ALL,
-                    payload: response
-                });
-            })
-            .catch(error => console.error('Error:', error));
-    };
-}
+const retrieveAll = (url: string) => dispatch => {
+    dispatch({type:REQUEST_ALL});
+    return fetch(url)
+        .then(res => res.text())
+        .then(response => {
+            dispatch({
+                type: RECEIVE_ALL,
+                payload: response
+            });
+        })
+        .catch(error => console.error('Error:', error)); 
+};
 
 //reducers
 function reducer(state: {[k: string]: any} = {}, action) {
@@ -52,15 +50,13 @@ store.subscribe(() => {
     if (state.response) {
         console.log(state);
         const a = state.response;
-        ReactDOM.render(
-            <Hello text={a}/>,
-        document.getElementById('main'));//.innerHTML = state.response;
+        ReactDOM.render(<Hello text={a}/>, document.getElementById('main'));
     }
 });
 
 function start() {
     const url = '/api/v1/catalog/items';
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", () => {
         const state = store.getState();
         if (state.isRequesting) {
             console.log('in progress.....');
