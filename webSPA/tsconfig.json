@@ -2,6 +2,11 @@
     "compilerOptions": {
         "target": "es5",
         "allowJs": true,
+        "jsx": "react",
+//es6 fix error - TS2339: Property 'assign' does not exist on type 'ObjectConstructor'.
+//dom: for dom api like document.getElementById
+        "lib": ["es6", "dom"],
+        //"moduleResolution": "node" ,
         "outDir": "out",
         "sourceMap": true
     },
