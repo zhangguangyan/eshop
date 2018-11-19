@@ -13,6 +13,10 @@ function reducer(state: { [k: string]: any } = {}, action) {
                 isRequesting: false,
                 response: action.payload
             };
+        case 'ADD_ITEM':
+            return Object.assign({}, state, {
+                item: action.payload
+            });
         default:
             return state;
     }

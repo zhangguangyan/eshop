@@ -6,6 +6,7 @@ import { connect, Provider } from "react-redux";
 import { logger } from 'redux-logger';
 
 import {reducer, Catalog} from '../catalog';
+import basket from '../basket';
 
 //configure store
 const store = createStore(reducer, applyMiddleware(thunk, logger));
@@ -21,6 +22,7 @@ function start() {
         </Provider>,
         document.getElementById('main')
     );
+    basket.render(store);
 }
 
 export default function app() {

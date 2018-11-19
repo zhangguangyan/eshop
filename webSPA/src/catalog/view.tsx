@@ -21,9 +21,9 @@ class Catalog extends React.Component<{ [key: string]: any }> {
         const items = this.props.catalogItems;
         if (items) {
             let itemList = items.map((item) =>
-                <div className="esh-catalog-item col-md-4">
+                <div key={item.id} className="esh-catalog-item col-md-4">
                     <img className="esh-catalog-thumbnail" src={item.pictureUri} />
-                    <button>
+                    <button onClick={()=>this.props.addToCart(item)}>
                         [ ADD TO CART ]
                     </button>
 
@@ -55,7 +55,8 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fireRequest: () => { dispatch(retrieveAll('/api/v1/catalog/items')) }
+        fireRequest: () => { dispatch(retrieveAll('/api/v1/catalog/items')) },
+        addToCart: (item) => dispatch({type:'ADD_ITEM', payload: item})
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Catalog);
