@@ -1,19 +1,23 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import { connect, Provider } from "react-redux";
 import { logger } from 'redux-logger';
 
-import {reducer, Catalog} from '../catalog';
-import basket from '../basket';
+import { reducer as catalogReducer, Catalog } from '../catalog';
+import basket, { reducer as basketReducer } from '../basket';
 
-//configure store
-const store = createStore(reducer, applyMiddleware(thunk, logger));
+const appReducer = combineReducers({
+    catalog: catalogReducer,
+    basket: basketReducer
+});
+
+const store = createStore(appReducer, applyMiddleware(thunk, logger));
 
 const App = () => (
     <Catalog />
-)
+);
 
 function start() {
     ReactDOM.render(

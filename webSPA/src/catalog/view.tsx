@@ -16,7 +16,6 @@ class Catalog extends React.Component<{ [key: string]: any }> {
 
     render() {
         console.log('render');
-        console.log(this.props);
         const loading = (this.props.loading) ? <h2>loading</h2> : '';
         const items = this.props.catalogItems;
         if (items) {
@@ -47,16 +46,18 @@ class Catalog extends React.Component<{ [key: string]: any }> {
 }
 
 function mapStateToProps(state) {
+    const cataglog = state.catalog
     return {
-        loading: state.isRequesting,
-        catalogItems: state.response
+        loading: cataglog.isRequesting,
+        catalogItems: cataglog.response
     };
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         fireRequest: () => { dispatch(retrieveAll('/api/v1/catalog/items')) },
-        addToCart: (item) => dispatch({type:'ADD_ITEM', payload: item})
+        // is it good to use string instead of action creation function as this will decouple catalog feature from basket
+        addToCart: (item) => dispatch({type:'ADD_ITEM', payload: item}) 
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Catalog);
