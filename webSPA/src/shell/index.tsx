@@ -6,7 +6,7 @@ import { connect, Provider } from "react-redux";
 import { logger } from 'redux-logger';
 
 import { reducer as catalogReducer, Catalog } from '../catalog';
-import basket, { reducer as basketReducer } from '../basket';
+import { reducer as basketReducer, basket } from '../basket';
 
 const appReducer = combineReducers({
     catalog: catalogReducer,
