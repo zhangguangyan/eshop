@@ -30,12 +30,12 @@ ext['groovy.version'] = '2.5.3'
 
 dependencies {
     compile 'org.codehaus.groovy:groovy-all:2.5.3'
+    compile('org.postgresql:postgresql')
+    compile('org.flywaydb:flyway-core')
 
     compile('org.springframework.boot:spring-boot-starter-webflux')
     compile('org.springframework.boot:spring-boot-starter-actuator')
     compile('org.springframework.boot:spring-boot-starter-jdbc')
-    compile('org.postgresql:postgresql')
-    compile('org.flywaydb:flyway-core')
     compile('org.springframework.boot:spring-boot-starter-amqp')
     compile project(':building.blocks')
 

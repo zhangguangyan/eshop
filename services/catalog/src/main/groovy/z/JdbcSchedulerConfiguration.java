@@ -15,6 +15,7 @@ public class JdbcSchedulerConfiguration {
     public JdbcSchedulerConfiguration(@Value("${spring.datasource.hikari.maximum-pool-size}") int connectionPoolSize) {
         this.connectionPoolSize = connectionPoolSize;
     }
+
     @Bean
     public Scheduler jdbcScheduler() {
         return Schedulers.fromExecutor(Executors.newFixedThreadPool(connectionPoolSize));
