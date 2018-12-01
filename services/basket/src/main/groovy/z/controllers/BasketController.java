@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import z.eventbus.EventBus;
+import z.eventbus.IntegrationEvent;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -29,6 +30,7 @@ public class BasketController {
     @PostMapping(path = "/checkout", produces = APPLICATION_JSON_VALUE)
     public Mono<ResponseEntity<String>> createItem(@RequestBody String catalogItem) {
         log.debug("create basket item: {}", catalogItem);
+        eventBus.publish(new IntegrationEvent(catalogItem));
         Mono<Integer> mono = Mono.just(1);
         return mono.map(s -> s > 0 ? new ResponseEntity<>(HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }

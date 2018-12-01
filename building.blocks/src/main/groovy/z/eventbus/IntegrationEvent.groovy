@@ -1,6 +1,6 @@
 package z.eventbus
 
-import groovy.json.JsonSlurper;
+import groovy.json.JsonSlurper
 
 class IntegrationEvent {
     private final String json

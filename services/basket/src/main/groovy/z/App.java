@@ -27,7 +27,7 @@ public class App {
     CommandLineRunner runner(RabbitMqBus bus, SimpleMessageListenerContainer listenerContainer) {
         return args -> {
             bus.subscribe(new IntegrationEvent("{}"), event -> {
-                log.debug("======== catalog service ===================");
+                log.debug("======== consumed by basket service ===================");
                 log.debug(event.toString());
                 log.debug("===================================");
             });
@@ -39,7 +39,7 @@ public class App {
     static class Config {
         @Bean
         RabbitMqBus rabbitMqBus(RabbitAdmin rabbitAdmin, SubscriberManager subscriberManager) {
-            return new RabbitMqBus(rabbitAdmin, "a.b.c01", subscriberManager);
+            return new RabbitMqBus(rabbitAdmin, "a.b.basket", subscriberManager);
         }
 
         @Bean

@@ -15,6 +15,5 @@ public class RabbitMqTest {
 
     @Test
     public void testSend() {
-        rabbitTemplate.convertAndSend(RabbitMqConfig.topicExchangeName, "foo.bar.baz", "Hello from RabbitMQ!");
     }
 }

@@ -8,8 +8,14 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import z.application.commands.CreateOrderCommandHandler;
+import z.application.integration.CheckedoutIntegrationEventHandler;
+import z.common.CommandBus;
+import z.common.CommandBusImpl;
+import z.domain.OrderRepository;
 import z.eventbus.IntegrationEvent;
 import z.eventbus.IntegrationEventHandler;
 import z.eventbus.SubscriberManager;
@@ -25,13 +31,9 @@ public class App {
     }
 
     @Bean
-    CommandLineRunner runner(RabbitMqBus bus, SimpleMessageListenerContainer listenerContainer) {
+    CommandLineRunner runner(RabbitMqBus bus, SimpleMessageListenerContainer listenerContainer, IntegrationEventHandler integrationEventHandler) {
         return args -> {
-            bus.subscribe(new IntegrationEvent("{}"), event -> {
-                log.debug("=========== ordering service ===============");
-                log.debug(event.toString());
-                log.debug("===================================");
-            });
+            bus.subscribe(new IntegrationEvent("{}"), integrationEventHandler);
             bus.configureListenerContainer(listenerContainer);
         };
     }
@@ -40,7 +42,7 @@ public class App {
     static class Config {
         @Bean
         RabbitMqBus rabbitMqBus(RabbitAdmin rabbitAdmin, SubscriberManager subscriberManager) {
-            return new RabbitMqBus(rabbitAdmin, "a.b.c02", subscriberManager);
+            return new RabbitMqBus(rabbitAdmin, "a.b.order", subscriberManager);
         }
 
         @Bean
@@ -57,6 +59,24 @@ public class App {
         @Bean
         RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
             return new RabbitAdmin(connectionFactory);
+        }
+    }
+
+    @Configuration
+    static class ConfigEvent {
+        @Bean
+        CheckedoutIntegrationEventHandler checkedoutIntegrationEventHandler(CommandBus commandBus) {
+            return new CheckedoutIntegrationEventHandler(commandBus);
+        }
+
+        @Bean
+        CommandBus commandBus(ApplicationContext context) {
+            return new CommandBusImpl(context);
+        }
+
+        @Bean
+        CreateOrderCommandHandler createOrderCommandHandler(OrderRepository repository) {
+            return new CreateOrderCommandHandler(repository);
         }
     }
 }
