@@ -1,1 +1,1 @@
-include 'api.gateway:web.bff.shopping', 'services:catalog', 'services:ordering', 'building.blocks'
+include 'api.gateway:web.bff.shopping', 'services:catalog', 'services:ordering', 'services:basket', 'building.blocks'

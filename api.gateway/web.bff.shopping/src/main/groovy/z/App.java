@@ -12,9 +12,11 @@ import org.springframework.context.annotation.Configuration;
 @SpringBootApplication
 public class App {
     private final String catalogApiUrl;
+    private final String basketApiUrl;
 
-    public App(@Value("${catalog.api.url}") String catalogApiUrl) {
+    public App(@Value("${catalog.api.url}") String catalogApiUrl, @Value("${basket.api.url}") String basketApiUrl) {
         this.catalogApiUrl = catalogApiUrl;
+        this.basketApiUrl = basketApiUrl;
     }
 
     @Bean
@@ -22,6 +24,8 @@ public class App {
         return builder.routes()
             .route("r1", r -> r.path("/api/v1/catalog/**")
                 .uri(catalogApiUrl))
+            .route("r2", r -> r.path("/api/v1/basket/**")
+                .uri(basketApiUrl))
             .build();
     }
 

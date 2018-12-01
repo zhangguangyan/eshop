@@ -37,6 +37,7 @@ const config = {
         port: 9000,
         overlay: true,
         proxy: {
+            '/api/v1/basket': 'http://localhost:3001',
             '/api': 'http://localhost:8081'
         }
     }

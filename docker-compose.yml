@@ -31,6 +31,18 @@ services:
       - "8080:8080"
     entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
+  basket.api:
+    image: basket
+    build:
+      context: ./services/basket
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    ports:
+      - "8083:8080"
+    entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
+
   ordering.api:
     image: ordering
     build:
@@ -49,8 +61,11 @@ services:
       context: ./api.gateway/web.bff.shopping
     depends_on:
       - catalog.api
+      - basket.api
+      - ordering.api
     environment:
       - CATALOG_API_URL=http://catalog.api:8080
+      - BASKET_API_URL=http://basket.api:8080
     ports:
       - "8081:8080"
 

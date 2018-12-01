@@ -12,6 +12,10 @@ function reducer(state: { [key: string]: any } = initialState, action) {
                 items: state.items.concat(action.payload),
                 total: state.total + 1
             });
+        case 'CHECKOUT':
+            return state;
+        case 'WHAT':
+            return state;
         default:
             return state;
     }
