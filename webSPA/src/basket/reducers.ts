@@ -8,8 +8,18 @@ const initialState = {
 function reducer(state: { [key: string]: any } = initialState, action) {
     switch (action.type) {
         case ADD_ITEM:
+            const item = action.payload;
+            const f = state.items.find(it => it.id == item.id);
+            let items;
+            if (f) {
+                f.quantity +=1;
+                items = state.items;
+            } else {
+                item.quantity = 1;
+                items = state.items.concat(item);
+            }
             return Object.assign({}, state, {
-                items: state.items.concat(action.payload),
+                items: items,
                 total: state.total + 1
             });
         case 'CHECKOUT':
