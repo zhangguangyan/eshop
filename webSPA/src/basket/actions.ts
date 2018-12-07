@@ -11,12 +11,15 @@ export const checkout = (url: string, basket) => dispatch => {
                 'Content-Type': 'application/json'
             }
         })
-        .then(res => res.json())
         .then(response => {
-            dispatch({
-                type: 'WHAT',
-                payload: response
-            });
+            if (response.ok) {
+                dispatch({
+                    type: 'WHAT',
+                    payload: response
+                });
+            } else {
+                console.log(response.statusText)
+            }
         })
         .catch(error => console.error('Error:', error));
 };
