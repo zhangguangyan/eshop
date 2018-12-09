@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import { Catalog } from '../catalog';
 import { basket } from '../basket';
+import { Ordering } from '../ordering';
 
 function mapStateToProps(state) {
     return {
@@ -12,7 +13,8 @@ function mapStateToProps(state) {
 const App = (page: any) => {
     const views = {
         'catalog': Catalog,
-        'basket': basket.view
+        'basket': basket.view,
+        'ordering': Ordering
 
     };
     console.log(page.current);

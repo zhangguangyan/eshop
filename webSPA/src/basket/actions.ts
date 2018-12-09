@@ -14,7 +14,7 @@ export const checkout = (url: string, basket) => dispatch => {
         .then(response => {
             if (response.ok) {
                 dispatch({
-                    type: 'WHAT',
+                    type: 'TO',
                     payload: response
                 });
             } else {

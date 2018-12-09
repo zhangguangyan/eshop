@@ -11,11 +11,13 @@ import './app.scss';
 import { reducer as catalogReducer } from './catalog';
 import { reducer as basketReducer, basket } from './basket';
 import { App, reducer as shellReducer } from './shell';
+import { reducer as orderingReducer } from './ordering';
 
 const appReducer = combineReducers({
     shell: shellReducer,
     catalog: catalogReducer,
-    basket: basketReducer
+    basket: basketReducer,
+    ordering: orderingReducer
 });
 
 const store = createStore(appReducer, applyMiddleware(thunk, logger));
