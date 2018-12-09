@@ -5,13 +5,11 @@ import { checkout } from './actions';
 
 var cart = document.getElementById('cart');
 
-
-
 function render(store) {
     store.subscribe(() => {
-        const state = store.getState().basket;
-        if (state.items.length > 0) {
-            cart.textContent = `Cart: (${state.total})`
+        const basket = store.getState().basket;
+        if (basket.items.length > 0) {
+            cart.textContent = `Cart: (${basket.total})`
         }
     });
     cart.addEventListener('click', e => {
@@ -37,14 +35,14 @@ class Basket extends React.Component<{ [key: string]: any }> {
                     <section className="esh-basket-item esh-basket-item--middle col-3">{item.name}</section>
                     <section className="esh-basket-item esh-basket-item--middle col-2">{item.price}</section>
                     <section className="esh-basket-item esh-basket-item--middle col-2">
-                        <input id="quantity"
+                        <input name="quantity"
                             className="esh-basket-input"
                             type="number"
                             min="1"
                             value={item.quantity}
-                            onChange={() => { }} />
+                            onChange={(e) => { this.props.updateQuantity(e, item.id); }} />
                     </section>
-                    <section className="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-2">{item.price * item.quantity}</section>
+                    <section className="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-2">{item.cost}</section>
                 </article>
                 <br />
             </div>
@@ -76,7 +74,7 @@ class Basket extends React.Component<{ [key: string]: any }> {
 
                     <article className="esh-basket-items row">
                         <section className="esh-basket-item col-9"></section>
-                        <section className="esh-basket-item esh-basket-item--mark col-2"></section>
+                        <section className="esh-basket-item esh-basket-item--mark col-2">{this.props.basket.totalCost}</section>
                     </article>
 
                     <article className="esh-basket-items row">
@@ -102,7 +100,11 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        checkout: (basket) => { dispatch(checkout('/api/v1/basket/checkout', basket)) },
+        checkout: (basket) => dispatch(checkout('/api/v1/basket/checkout', basket)),
+        updateQuantity: (e, itemId) => {
+            console.log(e);
+            dispatch({ type: 'UPDATE_ITEM', payload: { event: e, id: itemId } });
+        }
     }
 };
 export default {
