@@ -5,7 +5,6 @@ import thunk from 'redux-thunk';
 import { Provider } from "react-redux";
 import { logger } from 'redux-logger';
 
-import 'bootstrap';
 import './app.scss';
 
 import { reducer as catalogReducer } from './catalog';

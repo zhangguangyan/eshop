@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from "react-redux";
 
+import './view.scss';
 import { checkout } from './actions';
 
 var cart = document.getElementById('cart');
@@ -83,7 +84,7 @@ class Basket extends React.Component<{ [key: string]: any }> {
                             <button className="btn esh-basket-checkout">[ Update ]</button>
                         </section>
                         <section className="esh-basket-item col-3">
-                            <button className="btn" onClick={() => this.props.checkout(this.props.basket)}>[ Check out ]</button>
+                            <button className="btn esh-basket-checkout" onClick={() => this.props.checkout(this.props.basket)}>[ Check out ]</button>
                         </section>
                     </article>
                 </div>

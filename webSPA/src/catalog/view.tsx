@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from "react-redux";
 
+import './view.scss';
 import { retrieveAll } from './actions'
 
 //--- views/component
@@ -32,7 +33,7 @@ class Catalog extends React.Component<{ [key: string]: any }> {
             let itemList = items.map((item) =>
                 <div key={item.id} className="esh-catalog-item col-md-4">
                     <img className="esh-catalog-thumbnail" src={item.pictureUri} />
-                    <button onClick={() => this.props.addToCart(item)}>
+                    <button className="esh-catalog-button" onClick={() => this.props.addToCart(item)}>
                         [ ADD TO CART ]
                     </button>
 

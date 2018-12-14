@@ -7,6 +7,7 @@
 //dom: for dom api like document.getElementById
         "lib": ["es6", "dom"],
         //"moduleResolution": "node" ,
+        //"module": "commonjs",
         "outDir": "out",
         "sourceMap": true
     },

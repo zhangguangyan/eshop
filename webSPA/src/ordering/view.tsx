@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from "react-redux";
+import './view.scss';
 
 class Ordering extends React.Component<{ [key: string]: any }> {
     constructor(props) {
@@ -26,7 +27,6 @@ class Ordering extends React.Component<{ [key: string]: any }> {
         )
 
         return <div>
-            <h4>ordering</h4>
             <div className="esh-orders_new-header">
                 <div className="container">
                     <a className="esh-orders_new-back" >Back to basket</a>

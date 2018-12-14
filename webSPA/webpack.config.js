@@ -20,7 +20,13 @@ const config = {
             },
             {
                 test: /\.scss$/,
-                use: ['style-loader','css-loader','postcss-loader', 'sass-loader']
+                use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: [
+                    'file-loader'
+                ]
             }
         ]
     },
@@ -37,7 +43,6 @@ const config = {
         port: 9000,
         overlay: true,
         proxy: {
-//            '/api/v1/basket': 'http://localhost:3001',
             '/api': 'http://localhost:8081'
         }
     }
