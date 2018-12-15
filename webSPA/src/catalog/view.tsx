@@ -32,7 +32,7 @@ class Catalog extends React.Component<{ [key: string]: any }> {
         if (items) {
             let itemList = items.map((item) =>
                 <div key={item.id} className="esh-catalog-item col-md-4">
-                    <img className="esh-catalog-thumbnail" src={item.pictureUri} />
+                    <img className="esh-catalog-thumbnail" src={item.pictureUrl} />
                     <button className="esh-catalog-button" onClick={() => this.props.addToCart(item)}>
                         [ ADD TO CART ]
                     </button>

@@ -6,7 +6,7 @@ public class CatalogItem {
     private int id;
     private String description;
     private String name;
-    private String picture_filename;
+    private String pictureUrl;
     private BigDecimal price;
     private int available_stock;
     private int max_stock_threshold;
@@ -15,11 +15,11 @@ public class CatalogItem {
     private int brand_id;
     private int type_id;
 
-    public CatalogItem(int id, String description, String name, String picture_filename, BigDecimal price, int available_stock, int max_stock_threshold, boolean on_reorder, int restock_threshold, int brand_id, int type_id) {
+    public CatalogItem(int id, String description, String name, String pictureUrl, BigDecimal price, int available_stock, int max_stock_threshold, boolean on_reorder, int restock_threshold, int brand_id, int type_id) {
         this.id = id;
         this.description = description;
         this.name = name;
-        this.picture_filename = picture_filename;
+        this.pictureUrl = pictureUrl;
         this.price = price;
         this.available_stock = available_stock;
         this.max_stock_threshold = max_stock_threshold;
@@ -41,8 +41,8 @@ public class CatalogItem {
         return name;
     }
 
-    public String getPicture_filename() {
-        return picture_filename;
+    public String getPictureUrl() {
+        return pictureUrl;
     }
 
     public BigDecimal getPrice() {

@@ -3,6 +3,7 @@ package z.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,6 +29,9 @@ public class CatalogController {
     private final JdbcTemplate jdbcTemplate;
     private final EventBus eventBus;
 
+    @Value("${app.picture.server.url}")
+    private String pictureServerUrl;
+
     @Autowired
     public CatalogController(Scheduler scheduler, JdbcTemplate jdbcTemplate, EventBus eventBus) {
         this.scheduler = scheduler;
@@ -42,7 +46,7 @@ public class CatalogController {
                 rs.getInt("item_id"),
                 rs.getString("description"),
                 rs.getString("name"),
-                rs.getString("picture_filename"),
+                pictureServerUrl + "/" + rs.getString("picture_filename"),
                 rs.getBigDecimal("price"),
                 rs.getInt("available_stock"),
                 rs.getInt("max_stock_threshold"),
