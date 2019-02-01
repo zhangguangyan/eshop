@@ -28,7 +28,7 @@ services:
       - DB_URL=jdbc:postgresql://sql.data:5432/postgres
       - RABBITMQ_HOST=rabbitmq
 #access from browser so cannot use service name defined in compose file
-      - PICTURE_SERVER_URL=http://localhost:8080/pics
+      - PICTURE_SERVER_URL=http://${PIC_HOST:-localhost}:8080/pics
     ports:
       - "8080:8080"
     entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
