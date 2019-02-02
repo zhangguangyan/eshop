@@ -1,8 +1,11 @@
 before_script:
   - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+  - docker login -u gavin.zhang -p v8yY5nA73bCqdTrNFfAs $CI_REGISTRY
 
 build:
   stage: build
-  script: ./build.sh
+  script: 
+    - ./build.sh
+    - docker push registry.gitlab.com/gavin.zhang/eshop/catalog
 
 

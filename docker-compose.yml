@@ -18,7 +18,7 @@ services:
       - "15672:15672"
 
   catalog.api:
-    image: catalog
+    image: ${DOCKER_REGISTRY}/catalog
     build:
       context: ./services/catalog
     depends_on:
@@ -34,7 +34,7 @@ services:
     entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
   basket.api:
-    image: basket
+    image: ${DOCKER_REGISTRY}/basket
     build:
       context: ./services/basket
     depends_on:
@@ -46,7 +46,7 @@ services:
     entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
   ordering.api:
-    image: ordering
+    image: ${DOCKER_REGISTRY}/ordering
     build:
       context: ./services/ordering
     depends_on:
@@ -58,7 +58,7 @@ services:
     entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
   api.gateway:
-    image: web.bff.shopping
+    image: ${DOCKER_REGISTRY}/web.bff.shopping
     build:
       context: ./api.gateway/web.bff.shopping
     depends_on:
@@ -72,7 +72,7 @@ services:
       - "8081:8080"
 
   web.spa:
-    image: webspa
+    image: ${DOCKER_REGISTRY}/webspa
     build:
       context: ./webSPA
     depends_on:
