@@ -1,5 +1,4 @@
 variables:
-  DOCKER_HOST: ssh://ubuntu@13.236.121.99
 
 before_script:
   - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
@@ -26,6 +25,6 @@ build:
 deploy:
   stage: deploy
   script:
-    - docker-compose -f docker-compose.yml pull
-    - PIC_HOST=13.236.121.99 docker-compose -f docker-compose.yml up
+    - docker-compose -H ssh://ubuntu@13.236.121.99 -f docker-compose.yml pull
+    - PIC_HOST=13.236.121.99 docker-compose -H ssh://ubuntu@13.236.121.99 -f docker-compose.yml up
 
