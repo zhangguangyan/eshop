@@ -1,6 +1,13 @@
+variables:
+  DOCKER_HOST: ssh://ubuntu@13.236.121.99
+
 before_script:
   - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
   - docker login -u gavin.zhang -p v8yY5nA73bCqdTrNFfAs $CI_REGISTRY
+
+stages:
+  - build
+  - deploy
 
 build:
   stage: build
@@ -12,4 +19,9 @@ build:
     - docker push registry.gitlab.com/gavin.zhang/eshop/basket
     - docker push registry.gitlab.com/gavin.zhang/eshop/webspa
 
+deploy:
+  stage: deploy
+  script:
+    - docker-compose -f docker-compose.yml pull
+    - PIC_HOST=13.236.121.99 docker-compose -f docker-compose.yml up
 
