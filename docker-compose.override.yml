@@ -1,0 +1,68 @@
+version: '3.4'
+
+services:
+  sql.data:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: docker
+#requered when access outside docker, i.e. from application not running by docker
+    ports: ["5432:5432"]
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  catalog.api:
+    build:
+      context: ./services/catalog
+    depends_on:
+      - sql.data
+    environment:
+      - DB_URL=jdbc:postgresql://sql.data:5432/postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=docker
+      - RABBITMQ_HOST=rabbitmq
+#access from browser so cannot use service name defined in compose file
+      - PICTURE_SERVER_URL=http://${PIC_HOST:-localhost}:8080/pics
+    ports:
+      - "8080:8080"
+
+  basket.api:
+    build:
+      context: ./services/basket
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    ports:
+      - "8083:8080"
+
+  ordering.api:
+    build:
+      context: ./services/ordering
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    ports:
+      - "8082:8080"
+
+  api.gateway:
+    build:
+      context: ./api.gateway/web.bff.shopping
+    environment:
+      - CATALOG_API_URL=http://catalog.api:8080
+      - BASKET_API_URL=http://basket.api:8080
+    ports:
+      - "8081:8080"
+
+  web.spa:
+    build:
+      context: ./webSPA
+    depends_on:
+      - api.gateway
+    environment:
+      - API_GATEWAY=http://api.gateway:8080
+    ports:
+      - "8085:80"

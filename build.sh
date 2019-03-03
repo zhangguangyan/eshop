@@ -4,5 +4,5 @@ set -e
 ./gradlew clean build
 cd webSPA && ./build.sh
 cd ..
-#run the applications
-docker-compose -f docker-compose.yml build
+#build images
+docker-compose -f docker-compose.yml -f docker-compose.override.yml build
