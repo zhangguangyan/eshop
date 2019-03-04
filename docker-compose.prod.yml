@@ -1,18 +1,12 @@
 version: '3.4'
 
 services:
-  rabbitmq:
-    image: rabbitmq:3-management
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-
   catalog.api:
     environment:
       - DB_URL=jdbc:postgresql://${DB_HOST}:5432/eshopdb
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
-      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_HOST=10.0.10.12
 #access from browser so cannot use service name defined in compose file
       - PICTURE_SERVER_URL=http://${PIC_HOST:-localhost}:8080/pics
     ports:
@@ -20,11 +14,11 @@ services:
 
   basket.api:
     environment:
-      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_HOST=10.0.10.12
 
   ordering.api:
     environment:
-      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_HOST=10.0.10.12
     ports:
       - "8082:8080"
 

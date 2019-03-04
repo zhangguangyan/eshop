@@ -22,6 +22,7 @@ services:
       context: ./services/catalog
     depends_on:
       - sql.data
+      - rabbitmq
     environment:
       - DB_URL=jdbc:postgresql://sql.data:5432/postgres
       - DB_USER=postgres
@@ -35,6 +36,8 @@ services:
   basket.api:
     build:
       context: ./services/basket
+    depends_on:
+      - rabbitmq
     environment:
       - RABBITMQ_HOST=rabbitmq
     ports:
@@ -43,6 +46,8 @@ services:
   ordering.api:
     build:
       context: ./services/ordering
+    depends_on:
+      - rabbitmq
     environment:
       - RABBITMQ_HOST=rabbitmq
     ports:

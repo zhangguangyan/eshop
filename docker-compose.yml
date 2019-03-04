@@ -3,21 +3,14 @@ version: '3.4'
 services:
   catalog.api:
     image: ${DOCKER_REGISTRY}/catalog
-    depends_on:
-#      - sql.data
-      - rabbitmq
     entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
   basket.api:
     image: ${DOCKER_REGISTRY}/basket
-    depends_on:
-      - rabbitmq
     entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
   ordering.api:
     image: ${DOCKER_REGISTRY}/ordering
-    depends_on:
-      - rabbitmq
     entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
   api.gateway:
