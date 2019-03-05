@@ -18,8 +18,6 @@ services:
       - "15672:15672"
 
   catalog.api:
-    build:
-      context: ./services/catalog
     depends_on:
       - sql.data
       - rabbitmq
@@ -34,8 +32,6 @@ services:
       - "8080:8080"
 
   basket.api:
-    build:
-      context: ./services/basket
     depends_on:
       - rabbitmq
     environment:
@@ -44,8 +40,6 @@ services:
       - "8083:8080"
 
   ordering.api:
-    build:
-      context: ./services/ordering
     depends_on:
       - rabbitmq
     environment:
@@ -54,8 +48,6 @@ services:
       - "8082:8080"
 
   api.gateway:
-    build:
-      context: ./api.gateway/web.bff.shopping
     environment:
       - CATALOG_API_URL=http://catalog.api:8080
       - BASKET_API_URL=http://basket.api:8080
@@ -63,8 +55,6 @@ services:
       - "8081:8080"
 
   web.spa:
-    build:
-      context: ./webSPA
     depends_on:
       - api.gateway
     environment:

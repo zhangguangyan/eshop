@@ -5,4 +5,4 @@ set -e
 cd webSPA && ./build.sh
 cd ..
 #build images
-docker-compose -f docker-compose.yml -f docker-compose.override.yml build
+docker-compose -f docker-compose.yml build

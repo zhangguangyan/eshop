@@ -10,10 +10,6 @@ stages:
   - build
   - deploy
 
-stages:
-  - build
-  - deploy
-
 build:
   stage: build
   script: 

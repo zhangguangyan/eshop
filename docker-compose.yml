@@ -2,18 +2,26 @@ version: '3.4'
 
 services:
   catalog.api:
+    build:
+      context: ./services/catalog
     image: ${DOCKER_REGISTRY}/catalog
     entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
   basket.api:
+    build:
+      context: ./services/basket
     image: ${DOCKER_REGISTRY}/basket
     entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
   ordering.api:
+    build:
+      context: ./services/ordering
     image: ${DOCKER_REGISTRY}/ordering
     entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
   api.gateway:
+    build:
+      context: ./api.gateway/web.bff.shopping
     image: ${DOCKER_REGISTRY}/web.bff.shopping
     depends_on:
       - catalog.api
@@ -21,6 +29,8 @@ services:
       - ordering.api
 
   web.spa:
+    build:
+      context: ./webSPA
     image: ${DOCKER_REGISTRY}/webspa
     depends_on:
       - api.gateway
