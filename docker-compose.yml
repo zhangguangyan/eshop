@@ -5,19 +5,16 @@ services:
     build:
       context: ./services/catalog
     image: ${DOCKER_REGISTRY}/catalog
-    entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
   basket.api:
     build:
       context: ./services/basket
     image: ${DOCKER_REGISTRY}/basket
-    entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
   ordering.api:
     build:
       context: ./services/ordering
     image: ${DOCKER_REGISTRY}/ordering
-    entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
   api.gateway:
     build:

@@ -30,6 +30,7 @@ services:
       - PICTURE_SERVER_URL=http://${PIC_HOST:-localhost}:8080/pics
     ports:
       - "8080:8080"
+    entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
   basket.api:
     depends_on:
@@ -38,6 +39,7 @@ services:
       - RABBITMQ_HOST=rabbitmq
     ports:
       - "8083:8080"
+    entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
   ordering.api:
     depends_on:
@@ -46,6 +48,7 @@ services:
       - RABBITMQ_HOST=rabbitmq
     ports:
       - "8082:8080"
+    entrypoint: ["/wait-for-it.sh", "rabbitmq:15672", "--timeout=30", "--", "java", "-jar", "/app.jar"]
 
   api.gateway:
     environment:
