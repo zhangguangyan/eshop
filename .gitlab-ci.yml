@@ -23,6 +23,6 @@ build:
 deploy:
   stage: deploy
   script:
-    - docker-compose -H $AWS_DOCKER -f docker-compose.yml -f docker-compose.prod.yml pull
+    - docker-compose -H $AWS_DOCKER -f docker-compose.yml pull
     - COMPOSE_HTTP_TIMEOUT=600 PIC_HOST=$AWS_HOST DB_HOST=$DB_HOST DB_USER=$DB_USER DB_PASSWORD=$DB_PASSWORD docker-compose -H $AWS_DOCKER -f docker-compose.yml -f docker-compose.prod.yml up -d
 
