@@ -1,6 +1,6 @@
 variables:
   AWS_HOST: "13.236.121.99"
-  AWS_DOCKER: "ssh://ubuntu@$AWS_HOST"
+  AWS_DOCKER: "tcp://ubuntu@$AWS_HOST:2376"
 
 before_script:
   - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
