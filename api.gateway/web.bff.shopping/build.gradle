@@ -28,7 +28,7 @@ targetCompatibility = 1.8
 
 dependencyManagement {
     imports {
-        mavenBom 'org.springframework.cloud:spring-cloud-gateway:2.0.1.RELEASE'
+        mavenBom 'org.springframework.cloud:spring-cloud-gateway:2.1.1.RELEASE'
     }
 }
 
