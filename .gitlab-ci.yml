@@ -3,6 +3,7 @@ variables:
   AWS_DOCKER: "tcp://ubuntu@$AWS_HOST:2376"
 
 before_script:
+  - export IMG_TAG="$(date +%Y.%m)-$CI_COMMIT_SHORT_SHA"
   - export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
   - docker login -u gavin.zhang -p $MY_TOKEN $CI_REGISTRY
 
@@ -14,15 +15,15 @@ build:
   stage: build
   script: 
     - ./build.sh
-    - docker push registry.gitlab.com/gavin.zhang/eshop/catalog
-    - docker push registry.gitlab.com/gavin.zhang/eshop/ordering
-    - docker push registry.gitlab.com/gavin.zhang/eshop/web.bff.shopping
-    - docker push registry.gitlab.com/gavin.zhang/eshop/basket
-    - docker push registry.gitlab.com/gavin.zhang/eshop/webspa
+    - docker push registry.gitlab.com/gavin.zhang/eshop/catalog:$IMG_TAG
+    - docker push registry.gitlab.com/gavin.zhang/eshop/ordering:$IMG_TAG
+    - docker push registry.gitlab.com/gavin.zhang/eshop/web.bff.shopping:$IMG_TAG
+    - docker push registry.gitlab.com/gavin.zhang/eshop/basket:$IMG_TAG
+    - docker push registry.gitlab.com/gavin.zhang/eshop/webspa:$IMG_TAG
 
 deploy:
   stage: deploy
   script:
     - docker-compose -H $AWS_DOCKER -f docker-compose.yml pull
-    - COMPOSE_HTTP_TIMEOUT=600 PIC_HOST=$AWS_HOST DB_HOST=$DB_HOST DB_USER=$DB_USER DB_PASSWORD=$DB_PASSWORD docker-compose -H $AWS_DOCKER -f docker-compose.yml -f docker-compose.prod.yml up -d
+    - PIC_HOST=$AWS_HOST DB_HOST=$DB_HOST DB_USER=$DB_USER DB_PASSWORD=$DB_PASSWORD docker-compose -H $AWS_DOCKER -f docker-compose.yml -f docker-compose.prod.yml up -d
 

@@ -4,22 +4,22 @@ services:
   catalog.api:
     build:
       context: ./services/catalog
-    image: ${DOCKER_REGISTRY}/catalog
+    image: ${DOCKER_REGISTRY}/catalog:${IMG_TAG:-latest}
 
   basket.api:
     build:
       context: ./services/basket
-    image: ${DOCKER_REGISTRY}/basket
+    image: ${DOCKER_REGISTRY}/basket:${IMG_TAG:-latest}
 
   ordering.api:
     build:
       context: ./services/ordering
-    image: ${DOCKER_REGISTRY}/ordering
+    image: ${DOCKER_REGISTRY}/ordering:${IMG_TAG:-latest}
 
   api.gateway:
     build:
       context: ./api.gateway/web.bff.shopping
-    image: ${DOCKER_REGISTRY}/web.bff.shopping
+    image: ${DOCKER_REGISTRY}/web.bff.shopping:${IMG_TAG:-latest}
     depends_on:
       - catalog.api
       - basket.api
@@ -28,6 +28,6 @@ services:
   web.spa:
     build:
       context: ./webSPA
-    image: ${DOCKER_REGISTRY}/webspa
+    image: ${DOCKER_REGISTRY}/webspa:${IMG_TAG:-latest}
     depends_on:
       - api.gateway
