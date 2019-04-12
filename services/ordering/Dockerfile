@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine-jre
+FROM adoptopenjdk/openjdk8:alpine-jre
 VOLUME /tmp
 COPY build/libs/ordering-0.1.0.jar /app.jar
 COPY wait-for-it.sh /wait-for-it.sh
